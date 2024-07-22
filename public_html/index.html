@@ -2,16 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valor del Dolar en Argentina Hoy</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dolar Blue Value</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+    </style>
 </head>
 <body>
-    <h1 class="heading">Valor del Dolar Hoy</h1>
-    <div id="usd-value">
-    
-    </div>
-    <script src="app.js"></script>
+    <h1>Dolar Blue Value</h1>
+    <p>Compra: <strong id="compraValue">Loading...</strong></p>
+    <p>Venta: <strong id="ventaValue">Loading...</strong></p>
+    <p>Last updated: <span id="lastUpdated"></span></p>
+
+    <script>
+        function fetchDolarBlue() {
+            fetch('get_dolar_blue.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('compraValue').textContent = data.compra;
+                    document.getElementById('ventaValue').textContent = data.venta;
+                    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('compraValue').textContent = 'Error fetching data';
+                    document.getElementById('ventaValue').textContent = 'Error fetching data';
+                });
+        }
+
+        fetchDolarBlue();
+        // Refresh every 5 minutes (300000 milliseconds)
+        setInterval(fetchDolarBlue, 300000);
+    </script>
 </body>
 </html>
