@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dolar Blue Value</title>
+    <title>Valor Dolar Oficial y Blue</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
     </style>
 </head>
 <body>
-    <h1>Dolar Blue Value</h1>
+    <h1>Valor Dolar Blue</h1>
     <p>Compra: <strong id="compraValue">Loading...</strong></p>
     <p>Venta: <strong id="ventaValue">Loading...</strong></p>
     <p>Last updated: <span id="lastUpdated"></span></p>
+
+    <h1>Valor Dolar Oficial</h1>
+    <p>Compra: <strong id="compraValueOficial">Loading...</strong></p>
+    <p>Venta: <strong id="ventaValueOficial">Loading...</strong></p>
+    <p>Last updated: <span id="lastUpdatedOficial"></span></p>
 
     <script>
         function fetchDolarBlue() {
@@ -30,7 +35,24 @@
                 });
         }
 
+	function fetchDolarOficial() {
+            fetch('get_dolar_oficial.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('compraValueOficial').textContent = data.compra;
+                    document.getElementById('ventaValueOficial').textContent = data.venta;
+                    document.getElementById('lastUpdatedOficial').textContent = new Date().toLocaleString();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('compraValueOficial').textContent = 'Error fetching data';
+                    document.getElementById('ventaValueOficial').textContent = 'Error fetching data';
+                });
+        }
+
+
         fetchDolarBlue();
+	fetchDolarOficial();
         // Refresh every 5 minutes (300000 milliseconds)
         setInterval(fetchDolarBlue, 300000);
     </script>
